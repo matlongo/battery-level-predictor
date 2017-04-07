@@ -4,6 +4,8 @@ Created on Fri Feb 19 15:08:53 2016
 
 @author: mathias
 """
+
+#%%
 import pandas as pd
 import re
 import datetime
@@ -14,9 +16,9 @@ import sys
 #import seaborn
 
 #%%
-user = sys.argv[1]
-path = "users/" + user + ".csv"
-path_to_write = "preprocessed/preprocessed_"+ user + ".csv"
+user = "muestra"#sys.argv[1]
+path = "../muestras/" + user + ".csv"
+path_to_write = "../preprocessed/preprocessed_"+ user + ".csv"
 columns = ["id", "milliseconds", "timestamp", "feature", "value"]
 CHUNK_SIZE = 10000000
 
@@ -163,6 +165,10 @@ def parse_data_set(df_logs, last_row=None):
         different_battery = ((log.feature == "power|battery|level"))
                          
         if (different_battery):
+            if last_row["battery_level"] < row["battery_level"]:
+                row["battery_plugged"] = 1
+            else:
+                row["battery_plugged"] = 1
             data_set = data_set.append(row, ignore_index=True)        
             new_row = dict()
             for key in columns:
